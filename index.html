@@ -5,21 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg-light: #dfe9f3;
+      --bg-light: #e8f0fe;
       --container-bg: #ffffff;
-      --text-color: #333;
+      --text-color: #222;
       --user-bg: #6c63ff;
-      --bot-bg: #eeeeee;
-      --suggestion-bg: #e3f2fd;
-      --border: #ccc;
+      --bot-bg: #f1f1f1;
+      --suggestion-bg: #d0ebff;
+      --border: #bbb;
     }body.dark {
-  --bg-light: #1e1e2f;
-  --container-bg: #2c2c3a;
-  --text-color: #f0f0f0;
+  --bg-light: #121212;
+  --container-bg: #1e1e1e;
+  --text-color: #e0e0e0;
   --user-bg: #5c6bc0;
-  --bot-bg: #3e3e4e;
+  --bot-bg: #2c2c2c;
   --suggestion-bg: #3949ab;
-  --border: #555;
+  --border: #444;
 }
 
 body {
@@ -63,7 +63,7 @@ h2 {
 
 .bot-logo {
   text-align: center;
-  font-size: 40px;
+  font-size: 42px;
   margin-bottom: 10px;
 }
 
@@ -164,20 +164,20 @@ button {
 <body>
   <div class="chat-container">
     <div class="bot-logo">🤖</div>
-    <h1>Ergode</h1>
-    <h2>HNIT Help Bot</h2>
+    <h1>🛠️ Ergode</h1>
+    <h2>💬 HNIT Help Bot</h2>
     <div class="chat-box" id="chatBox"></div>
     <div class="suggestions" id="suggestionBox"></div>
     <div class="input-area">
       <input type="text" id="userInput" placeholder="Type your question..." />
       <button class="ask-btn" onclick="getAnswer()">Ask</button>
       <button class="mic-btn" onclick="startListening()">🎤</button>
-      <button class="clear-btn" onclick="clearChat()">Clear</button>
+      <button class="clear-btn" onclick="clearChat()">🧹</button>
       <button class="dark-btn" onclick="toggleDarkMode()">🌙</button>
     </div>
     <div class="footer">
-      Developed by Rohit Gupta <br>
-      📩 For technical support: <a href="mailto:hnit.support@ergode.com" style="color: inherit;">hnit.support@ergode.com</a><br>
+      👨‍💻 Developed by Rohit Gupta<br>
+      📩 Technical support: <a href="mailto:hnit.support@ergode.com" style="color: inherit;">hnit.support@ergode.com</a><br>
       📞 Contact: <a href="tel:+919614196729" style="color: inherit;">9614196729</a>
     </div>
   </div>  <script>
@@ -203,34 +203,6 @@ button {
       document.body.classList.toggle("dark");
     }
 
-    function getBestMatch(inputText, data) {
-      inputText = inputText.toLowerCase();
-      let bestMatch = null;
-      let highestScore = 0;
-
-      for (let key in data) {
-        const keyWords = key.toLowerCase().split(/\s+/);
-        let matchCount = 0;
-
-        keyWords.forEach(word => {
-          if (inputText.includes(word)) matchCount++;
-        });
-
-        const score = matchCount / keyWords.length;
-
-        if (score > highestScore) {
-          highestScore = score;
-          bestMatch = key;
-        }
-
-        if (inputText === key.toLowerCase()) {
-          return key;
-        }
-      }
-
-      return highestScore >= 0.6 ? bestMatch : null;
-    }
-
     async function getAnswer() {
       const question = input.value.trim();
       if (!question) return;
@@ -245,10 +217,8 @@ button {
       chatBox.scrollTop = chatBox.scrollHeight;
 
       try {
-        const bestKey = getBestMatch(question, jsonData);
-        const answerText = bestKey
-          ? jsonData[bestKey]
-          : "❗ This answer isn’t available in our database. Please email your query to hnit.support@ergode.com — we’ll get back with a solution and aim to include it in future bot updates.";
+        const answerText = jsonData[question] || 
+          "❗ This answer isn’t available in our database. Please email your query to hnit.support@ergode.com — we’ll get back with a solution and aim to include it in future bot updates.";
 
         typeText(loaderId, answerText);
         saveChat();
