@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HNIT Bot</title>
+  <title>HNIT Bot (No Google Sheet)</title>
 </head>
 <body>
   <h1>Ask HNIT Bot</h1>
@@ -11,24 +11,28 @@
   <p id="response">Response will appear here</p>
 
   <script>
-    function getAnswer() {
-      const input = document.getElementById("userInput").value.trim();
+    async function getAnswer() {
+      const input = document.getElementById("userInput").value.trim().toLowerCase();
       if (!input) {
         document.getElementById("response").innerText = "Please enter a question.";
         return;
       }
 
-      const url = `https://script.google.com/macros/s/AKfycbwgdbrF_zh6IbRxOf6l-c5mUK2eYmW7mQqzd7bAMou8d132Fh4aKlsCV8CcRzJHQ0IH/exec?message=${encodeURIComponent(input)}`;
+      try {
+        const res = await fetch('data.json');
+        const data = await res.json();
 
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById("response").innerText = data.text;
-        })
-        .catch(err => {
-          console.error("Error:", err);
-          document.getElementById("response").innerText = "Error fetching response.";
-        });
+        const match = data.find(item => input === item.keyword.toLowerCase());
+
+        if (match) {
+          document.getElementById("response").innerText = match.response;
+        } else {
+          document.getElementById("response").innerText = "Sorry, no matching answer found.";
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("response").innerText = "Error loading data.";
+      }
     }
   </script>
 </body>
