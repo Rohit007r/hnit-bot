@@ -1,313 +1,158 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HNIT Help Bot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HNIT Help Bot</title>
   <style>
-    :root {
-      --bg-light: #e8f0fe;
-      --container-bg: #ffffff;
-      --text-color: #222;
-      --user-bg: #6c63ff;
-      --bot-bg: #f1f1f1;
-      --suggestion-bg: #d0ebff;
-      --border: #bbb;
-    }body.dark {
-  --bg-light: #121212;
-  --container-bg: #1e1e1e;
-  --text-color: #e0e0e0;
-  --user-bg: #5c6bc0;
-  --bot-bg: #2c2c2c;
-  --suggestion-bg: #3949ab;
-  --border: #444;
-}
-
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: var(--bg-light);
-  margin: 0;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  color: var(--text-color);
-  transition: background 0.3s, color 0.3s;
-}
-
-.chat-container {
-  width: 100%;
-  max-width: 720px;
-  background: var(--container-bg);
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  border: 2px solid var(--border);
-}
-
-h1, h2 {
-  text-align: center;
-  margin: 0;
-}
-
-h1 {
-  font-size: 28px;
-}
-
-h2 {
-  font-weight: normal;
-  margin-bottom: 16px;
-}
-
-.bot-logo {
-  text-align: center;
-  font-size: 42px;
-  margin-bottom: 10px;
-}
-
-.chat-box {
-  height: 360px;
-  overflow-y: auto;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 12px;
-  background: var(--container-bg);
-  margin-bottom: 15px;
-}
-
-.bubble {
-  padding: 14px 18px;
-  border-radius: 20px;
-  margin: 6px 0;
-  max-width: 75%;
-  word-wrap: break-word;
-  font-size: 15px;
-  line-height: 1.4;
-}
-
-.user {
-  background: var(--user-bg);
-  color: white;
-  float: right;
-  clear: both;
-}
-
-.bot {
-  background: var(--bot-bg);
-  color: var(--text-color);
-  float: left;
-  clear: both;
-}
-
-.input-area {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-input[type="text"] {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 15px;
-  background: white;
-}
-
-button {
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 15px;
-  cursor: pointer;
-  border: none;
-  transition: 0.2s ease;
-}
-
-.mic-btn { background: #ff7043; color: white; }
-.ask-btn { background: #4caf50; color: white; }
-.clear-btn { background: #f44336; color: white; }
-.dark-btn { background: #607d8b; color: white; }
-
-.suggestions {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-
-.suggestion {
-  background: var(--suggestion-bg);
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.footer {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 13px;
-  color: var(--text-color);
-}
-
-@media (max-width: 480px) {
-  h1 { font-size: 22px; }
-  h2 { font-size: 17px; }
-  .chat-box { height: 300px; }
-  button { flex: 1; }
-}
-
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #ffe6f0, #fdf6fa);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .welcome-screen, .chat-container {
+      width: 90%;
+      max-width: 400px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 30px 20px;
+    }
+    .chat-container {
+      display: none;
+      flex-direction: column;
+    }
+    .welcome-img {
+      width: 120px;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 25px;
+    }
+    .start-btn {
+      background: #ff4081;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .start-btn:hover {
+      background: #e73370;
+    }
+    .chat-box {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      background: #f9f9f9;
+      margin-bottom: 15px;
+    }
+    .bubble {
+      margin: 5px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      max-width: 75%;
+      font-size: 14px;
+    }
+    .user {
+      background: #007bff;
+      color: white;
+      margin-left: auto;
+    }
+    .bot {
+      background: #eee;
+      color: black;
+      margin-right: auto;
+    }
+    .input-area {
+      display: flex;
+      gap: 8px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    button.ask-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="chat-container">
-    <div class="bot-logo">🤖</div>
-    <h1>🛠️ Ergode</h1>
-    <h2>💬 HNIT Help Bot</h2>
+  <div class="welcome-screen" id="welcomeScreen">
+    <img src="https://img.icons8.com/emoji/96/robot-emoji.png" class="welcome-img" alt="chatbot" />
+    <h1>Welcome to HNIT Bot</h1>
+    <p>Need help with IT? Ask your question or get quick answers.</p>
+    <button class="start-btn" onclick="startChat()">Start Chat</button>
+  </div>  <div class="chat-container" id="chatContainer">
+    <h2>🤖 HNIT Help Bot</h2>
     <div class="chat-box" id="chatBox"></div>
-    <div class="suggestions" id="suggestionBox"></div>
     <div class="input-area">
       <input type="text" id="userInput" placeholder="Type your question..." />
       <button class="ask-btn" onclick="getAnswer()">Ask</button>
-      <button class="mic-btn" onclick="startListening()">🎤</button>
-      <button class="clear-btn" onclick="clearChat()">🧹</button>
-      <button class="dark-btn" onclick="toggleDarkMode()">🌙</button>
-    </div>
-    <div class="footer">
-      👨‍💻 Developed by Rohit Gupta<br>
-      📩 Technical support: <a href="mailto:hnit.support@ergode.com" style="color: inherit;">hnit.support@ergode.com</a><br>
-      📞 Contact: <a href="tel:+919614196729" style="color: inherit;">9614196729</a>
     </div>
   </div>  <script>
+    const welcomeScreen = document.getElementById("welcomeScreen");
+    const chatContainer = document.getElementById("chatContainer");
     const chatBox = document.getElementById("chatBox");
     const input = document.getElementById("userInput");
-    const suggestionBox = document.getElementById("suggestionBox");
-    let jsonData = {};
 
-    function saveChat() {
-      localStorage.setItem("chatHistory", chatBox.innerHTML);
+    const sampleData = {
+      "how to reset password": "You can reset your password by visiting the internal portal and clicking 'Forgot Password'.",
+      "vpn not working": "Please check your network connection and retry connecting to VPN.",
+      "printer issue": "Try restarting the printer and ensure it's properly connected."
+    };
+
+    function startChat() {
+      welcomeScreen.style.display = "none";
+      chatContainer.style.display = "flex";
     }
 
-    function clearChat() {
-      if (confirm("Clear all chat?")) {
-        chatBox.innerHTML = "";
-        localStorage.removeItem("chatHistory");
-        suggestionBox.innerHTML = "";
-        input.value = "";
-      }
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark");
-    }
-
-    async function getAnswer() {
-      const question = input.value.trim();
+    function getAnswer() {
+      const question = input.value.trim().toLowerCase();
       if (!question) return;
 
-      suggestionBox.innerHTML = "";
-      chatBox.innerHTML += `<div class="bubble user">${question}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
+      chatBox.innerHTML += `<div class="bubble user">${input.value}</div>`;
+
+      const reply = sampleData[question] ||
+        `❗ This answer isn’t available in our database.<br>
+         📧 <a href="mailto:hnit.support@ergode.com">Contact HNIT Support</a><br>
+         💬 <a href="https://wa.me/919614196729">Chat on WhatsApp</a>`;
+
+      chatBox.innerHTML += `<div class="bubble bot">${reply}</div>`;
       input.value = "";
-
-      const loaderId = "loader_" + Date.now();
-      chatBox.innerHTML += `<div class="bubble bot" id="${loaderId}">Typing...</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
-
-      try {
-        const answerText = jsonData[question] || 
-          "❗ This answer isn’t available in our database. Please email your query to hnit.support@ergode.com — we’ll get back with a solution and aim to include it in future bot updates.";
-
-        typeText(loaderId, answerText);
-        saveChat();
-      } catch (err) {
-        document.getElementById(loaderId).outerHTML = `<div class="bubble bot">⚠️ Error loading data.</div>`;
-      }
     }
 
-    function typeText(elementId, text, speed = 20) {
-      const element = document.getElementById(elementId);
-      let index = 0;
-      const interval = setInterval(() => {
-        element.textContent = text.slice(0, ++index);
-        if (index >= text.length) {
-          clearInterval(interval);
-          element.classList.add("bot");
-          saveChat();
-        }
-      }, speed);
-    }
-
-    function startListening() {
-      if (!('webkitSpeechRecognition' in window)) {
-        alert('Voice recognition not supported in this browser');
-        return;
-      }
-
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = 'en-IN';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-
-      recognition.start();
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        input.value = transcript;
-        getAnswer();
-      };
-
-      recognition.onerror = (event) => {
-        alert('Error occurred in recognition: ' + event.error);
-      };
-    }
-
-    input.addEventListener("input", () => {
-      const text = input.value.toLowerCase();
-      suggestionBox.innerHTML = "";
-      if (!text) return;
-
-      const matches = Object.keys(jsonData)
-        .filter(q => q.toLowerCase().includes(text))
-        .slice(0, 5);
-
-      matches.forEach(match => {
-        const div = document.createElement("div");
-        div.className = "suggestion";
-        div.innerText = match;
-        div.onclick = () => {
-          input.value = match;
-          getAnswer();
-        };
-        suggestionBox.appendChild(div);
-      });
-    });
-
-    input.addEventListener("keydown", (e) => {
+    input.addEventListener("keydown", e => {
       if (e.key === "Enter") getAnswer();
     });
-
-    window.onload = async () => {
-      input.focus();
-      const history = localStorage.getItem("chatHistory");
-
-      if (history) {
-        chatBox.innerHTML = history;
-      } else {
-        chatBox.innerHTML = `<div class="bubble bot">👋 Hello! I'm the HNIT Help Bot. How can I assist you today?</div>`;
-        saveChat();
-      }
-
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      try {
-        const res = await fetch("data.json");
-        jsonData = await res.json();
-      } catch (error) {
-        console.error("Failed to load data.json", error);
-      }
-    };
   </script></body>
 </html>
