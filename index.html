@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f2f5;
+      background: linear-gradient(to right, #eef2f3, #8e9eab);
       margin: 0;
       display: flex;
       justify-content: center;
@@ -16,47 +16,69 @@
 
     .chat-container {
       width: 100%;
-      max-width: 500px;
+      max-width: 700px;
       background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      padding: 20px;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .header img {
+      height: 48px;
+      width: 48px;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      margin: 0;
+      color: #333;
     }
 
     h2 {
       text-align: center;
-      color: #333;
-      margin-bottom: 10px;
+      color: #444;
+      margin-bottom: 12px;
     }
 
     .chat-box {
-      height: 300px;
+      height: 360px;
       overflow-y: auto;
       border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 10px;
+      border-radius: 12px;
+      padding: 12px;
       background: #f9f9f9;
       margin-bottom: 15px;
     }
 
     .bubble {
-      padding: 10px 15px;
-      border-radius: 12px;
-      margin: 5px 0;
+      padding: 12px 16px;
+      border-radius: 16px;
+      margin: 6px 0;
       max-width: 75%;
       word-wrap: break-word;
+      font-size: 15px;
     }
 
     .user {
       background: #007bff;
       color: white;
-      align-self: flex-end;
       float: right;
       clear: both;
     }
 
     .bot {
-      background: #eaeaea;
+      background: #f1f1f1;
       color: black;
       float: left;
       clear: both;
@@ -64,23 +86,24 @@
 
     .input-area {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
 
     input[type="text"] {
       flex: 1;
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
+      border-radius: 10px;
+      font-size: 15px;
     }
 
     button {
       background: #28a745;
       color: white;
       border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 15px;
       cursor: pointer;
     }
 
@@ -92,13 +115,13 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .suggestion {
       background: #e8f0fe;
-      padding: 8px 12px;
-      border-radius: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 14px;
     }
@@ -122,10 +145,21 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #777;
+    }
   </style>
 </head>
 <body>
   <div class="chat-container">
+    <div class="header">
+      <img src="https://drive.google.com/uc?export=view&id=1LOD5zNbMEOY59VNrDAinlUMpk2VQwq0N" alt="Ergode Logo" />
+      <h1>Ergode</h1>
+    </div>
     <h2>HNIT Help Bot</h2>
     <div class="chat-box" id="chatBox"></div>
     <div class="suggestions" id="suggestionBox"></div>
@@ -133,6 +167,7 @@
       <input type="text" id="userInput" placeholder="Type your question..." />
       <button onclick="getAnswer()">Ask</button>
     </div>
+    <div class="footer">Developed by Rohit Gupta</div>
   </div>
 
   <script>
