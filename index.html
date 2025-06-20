@@ -204,22 +204,31 @@ button {
     }
 
     function getBestMatch(inputText, data) {
+      inputText = inputText.toLowerCase();
       let bestMatch = null;
       let highestScore = 0;
 
       for (let key in data) {
         const keyWords = key.toLowerCase().split(/\s+/);
         let matchCount = 0;
+
         keyWords.forEach(word => {
           if (inputText.includes(word)) matchCount++;
         });
+
         const score = matchCount / keyWords.length;
-        if (score > highestScore && score >= 0.5) {
+
+        if (score > highestScore) {
           highestScore = score;
-          bestMatch = data[key];
+          bestMatch = key;
+        }
+
+        if (inputText === key.toLowerCase()) {
+          return key;
         }
       }
-      return bestMatch;
+
+      return highestScore >= 0.6 ? bestMatch : null;
     }
 
     async function getAnswer() {
@@ -232,16 +241,15 @@ button {
       input.value = "";
 
       const loaderId = "loader_" + Date.now();
-      const loaderDiv = document.createElement("div");
-      loaderDiv.className = "bubble bot";
-      loaderDiv.id = loaderId;
-      loaderDiv.textContent = "Typing...";
-      chatBox.appendChild(loaderDiv);
+      chatBox.innerHTML += `<div class="bubble bot" id="${loaderId}">Typing...</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
 
       try {
-        const foundAnswer = getBestMatch(question.toLowerCase(), jsonData);
-        const answerText = foundAnswer || "❗ This answer isn’t available in our database. Please email your query to hnit.support@ergode.com — we’ll get back with a solution and aim to include it in future bot updates.";
+        const bestKey = getBestMatch(question, jsonData);
+        const answerText = bestKey
+          ? jsonData[bestKey]
+          : "❗ This answer isn’t available in our database. Please email your query to hnit.support@ergode.com — we’ll get back with a solution and aim to include it in future bot updates.";
+
         typeText(loaderId, answerText);
         saveChat();
       } catch (err) {
