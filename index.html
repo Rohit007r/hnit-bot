@@ -1,91 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>HNIT Support Bot</title>
+  <meta charset="UTF-8">
+  <title>HNIT Bot</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-    }
-    #chat {
-      max-width: 600px;
-      margin: auto;
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .message {
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 6px;
-    }
-    .user {
-      background-color: #d0ebff;
-      text-align: right;
-    }
-    .bot {
-      background-color: #e6ffe6;
-      text-align: left;
-    }
-    #inputArea {
-      margin-top: 20px;
-      display: flex;
-    }
-    #userInput {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-    }
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+    input, button { padding: 10px; font-size: 16px; width: 100%; margin: 10px 0; }
+    #response { margin-top: 20px; font-weight: bold; color: green; }
   </style>
 </head>
 <body>
+  <h2>Ask HNIT Bot</h2>
+  <input type="text" id="userInput" placeholder="e.g. forgot password">
+  <button onclick="getAnswer()">Ask</button>
+  <div id="response"></div>
 
-<div id="chat">
-  <h2>🤖 HNIT Bot</h2>
-  <div id="chatBox"></div>
-  <div id="inputArea">
-    <input type="text" id="userInput" placeholder="Type your issue here..." />
-    <button onclick="sendMessage()">Send</button>
-  </div>
-</div>
+  <script>
+    function getAnswer() {
+      const input = document.getElementById("userInput").value.trim();
+      if (!input) {
+        document.getElementById("response").innerText = "Please enter a question.";
+        return;
+      }
 
-<script>
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwgdbrF_zh6IbRxOf6l-c5mUK2eYmW7mQqzd7bAMou8d132Fh4aKlsCV8CcRzJHQ0IH/exec";
+      const apiUrl = "https://script.google.com/macros/s/AKfycbwgdbrF_zh6IbRxOf6l-c5mUK2eYmW7mQqzd7bAMou8d132Fh4aKlsCV8CcRzJHQ0IH/exec?message=" + encodeURIComponent(input);
 
-  function sendMessage() {
-    const inputBox = document.getElementById("userInput");
-    const userText = inputBox.value.trim();
-    if (!userText) return;
-
-    appendMessage(userText, 'user');
-    inputBox.value = "";
-
-    fetch(WEB_APP_URL + "?message=" + encodeURIComponent(userText))
-      .then(response => response.json())
-      .then(data => {
-        const botText = data.text || "Sorry, I didn't get that.";
-        appendMessage(botText, 'bot');
-      })
-      .catch(error => {
-        console.error("Error:", error);
-        appendMessage("Error contacting bot.", 'bot');
-      });
-  }
-
-  function appendMessage(text, sender) {
-    const msgDiv = document.createElement("div");
-    msgDiv.className = `message ${sender}`;
-    msgDiv.innerText = text;
-    document.getElementById("chatBox").appendChild(msgDiv);
-  }
-</script>
-
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("response").innerText = data.text;
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          document.getElementById("response").innerText = "Error getting response.";
+        });
+    }
+  </script>
 </body>
 </html>
