@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>HNIT Help Bot</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f7f9;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
       margin: 0;
-      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -18,45 +17,49 @@
     .chat-container {
       width: 100%;
       max-width: 500px;
-      background: white;
-      border-radius: 10px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
 
     h2 {
-      margin-top: 0;
       text-align: center;
       color: #333;
+      margin-bottom: 10px;
     }
 
     .chat-box {
       height: 300px;
       overflow-y: auto;
       border: 1px solid #ddd;
+      border-radius: 8px;
       padding: 10px;
-      border-radius: 5px;
-      background: #fafafa;
+      background: #f9f9f9;
       margin-bottom: 15px;
     }
 
     .bubble {
-      padding: 10px;
-      margin: 8px 0;
-      max-width: 80%;
-      border-radius: 10px;
-      clear: both;
+      padding: 10px 15px;
+      border-radius: 12px;
+      margin: 5px 0;
+      max-width: 75%;
+      word-wrap: break-word;
     }
 
     .user {
-      background: #0084ff;
+      background: #007bff;
       color: white;
+      align-self: flex-end;
       float: right;
+      clear: both;
     }
 
     .bot {
-      background: #e4e6eb;
+      background: #eaeaea;
+      color: black;
       float: left;
+      clear: both;
     }
 
     .input-area {
@@ -68,15 +71,16 @@
       flex: 1;
       padding: 10px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 14px;
     }
 
     button {
-      padding: 10px 15px;
-      border: none;
       background: #28a745;
       color: white;
-      border-radius: 5px;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
       cursor: pointer;
     }
 
@@ -84,16 +88,34 @@
       background: #218838;
     }
 
+    .suggestions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .suggestion {
+      background: #e8f0fe;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .suggestion:hover {
+      background: #cfe2ff;
+    }
+
     .loader {
       border: 4px solid #f3f3f3;
       border-top: 4px solid #555;
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       animation: spin 1s linear infinite;
       display: inline-block;
       vertical-align: middle;
-      margin-left: 10px;
     }
 
     @keyframes spin {
@@ -106,7 +128,7 @@
   <div class="chat-container">
     <h2>HNIT Help Bot</h2>
     <div class="chat-box" id="chatBox"></div>
-
+    <div class="suggestions" id="suggestionBox"></div>
     <div class="input-area">
       <input type="text" id="userInput" placeholder="Type your question..." />
       <button onclick="getAnswer()">Ask</button>
@@ -116,28 +138,49 @@
   <script>
     const chatBox = document.getElementById("chatBox");
     const input = document.getElementById("userInput");
+    const suggestionBox = document.getElementById("suggestionBox");
+    let jsonData = {};
 
-    // Load chat history
-    window.onload = () => {
+    window.onload = async () => {
       const history = localStorage.getItem("chatHistory");
       if (history) chatBox.innerHTML = history;
       chatBox.scrollTop = chatBox.scrollHeight;
+
+      const res = await fetch("data.json");
+      jsonData = await res.json();
     };
 
-    // Save chat history
+    input.addEventListener("input", () => {
+      const text = input.value.toLowerCase();
+      suggestionBox.innerHTML = "";
+
+      if (!text) return;
+
+      const matches = Object.keys(jsonData)
+        .filter(q => q.toLowerCase().includes(text))
+        .slice(0, 5);
+
+      matches.forEach(match => {
+        const div = document.createElement("div");
+        div.className = "suggestion";
+        div.innerText = match;
+        div.onclick = () => {
+          input.value = match;
+          getAnswer();
+        };
+        suggestionBox.appendChild(div);
+      });
+    });
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") getAnswer();
+    });
+
     function saveChat() {
       localStorage.setItem("chatHistory", chatBox.innerHTML);
     }
 
-    // Handle Enter key
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        getAnswer();
-      }
-    });
-
-    // Fuzzy match logic
-    function getBestMatch(input, data) {
+    function getBestMatch(inputText, data) {
       let bestMatch = null;
       let highestScore = 0;
 
@@ -146,7 +189,7 @@
         let matchCount = 0;
 
         keyWords.forEach(word => {
-          if (input.includes(word)) matchCount++;
+          if (inputText.includes(word)) matchCount++;
         });
 
         const score = matchCount / keyWords.length;
@@ -164,33 +207,26 @@
       const question = input.value.trim();
       if (!question) return;
 
-      // Show user question
+      suggestionBox.innerHTML = "";
+
       chatBox.innerHTML += `<div class="bubble user">${question}</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
       input.value = "";
 
-      // Show loading bubble
       const loaderId = "loader_" + Date.now();
       chatBox.innerHTML += `<div class="bubble bot" id="${loaderId}"><span class="loader"></span> Thinking...</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
 
       try {
-        const res = await fetch("data.json");
-        const data = await res.json();
-
-        const lowerQ = question.toLowerCase();
-        const foundAnswer = getBestMatch(lowerQ, data);
+        const foundAnswer = getBestMatch(question.toLowerCase(), jsonData);
         const answerText = foundAnswer || "❌ Sorry, I couldn't find an answer.";
 
-        // Replace loading with bot reply
         document.getElementById(loaderId).outerHTML = `<div class="bubble bot">${answerText}</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
         saveChat();
-
       } catch (err) {
         console.error(err);
         document.getElementById(loaderId).outerHTML = `<div class="bubble bot">⚠️ Error loading data.</div>`;
-        chatBox.scrollTop = chatBox.scrollHeight;
       }
     }
   </script>
