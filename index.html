@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>HNIT Help Bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -11,7 +12,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
+      padding: 10px;
     }
 
     .chat-container {
@@ -20,35 +22,22 @@
       background: #ffffff;
       border-radius: 24px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      padding: 30px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
     }
 
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .header img {
-      height: 48px;
-      width: 48px;
-      border-radius: 12px;
-      object-fit: contain;
-    }
-
-    .header h1 {
+    h1 {
+      text-align: center;
       font-size: 26px;
-      margin: 0;
       color: #333;
+      margin-bottom: 5px;
     }
 
     h2 {
       text-align: center;
-      color: #444;
-      margin-bottom: 12px;
+      color: #555;
+      margin-bottom: 15px;
     }
 
     .chat-box {
@@ -86,7 +75,8 @@
 
     .input-area {
       display: flex;
-      gap: 12px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     input[type="text"] {
@@ -101,7 +91,7 @@
       background: #28a745;
       color: white;
       border: none;
-      padding: 12px 18px;
+      padding: 12px 16px;
       border-radius: 10px;
       font-size: 15px;
       cursor: pointer;
@@ -109,6 +99,11 @@
 
     button:hover {
       background: #218838;
+    }
+
+    .mic-btn {
+      background: #ff5722;
+      padding: 0 14px;
     }
 
     .suggestions {
@@ -148,24 +143,37 @@
 
     .footer {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
       font-size: 13px;
       color: #777;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 22px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      .chat-box {
+        height: 300px;
+      }
+      button {
+        flex: 1;
+      }
     }
   </style>
 </head>
 <body>
   <div class="chat-container">
-    <div class="header">
-      <img src="https://drive.google.com/uc?export=view&id=1LOD5zNbMEOY59VNrDAinlUMpk2VQwq0N" alt="Ergode Logo" />
-      <h1>Ergode</h1>
-    </div>
+    <h1>Ergode</h1>
     <h2>HNIT Help Bot</h2>
     <div class="chat-box" id="chatBox"></div>
     <div class="suggestions" id="suggestionBox"></div>
     <div class="input-area">
       <input type="text" id="userInput" placeholder="Type your question..." />
       <button onclick="getAnswer()">Ask</button>
+      <button class="mic-btn" onclick="startListening()">🎤</button>
     </div>
     <div class="footer">Developed by Rohit Gupta</div>
   </div>
@@ -263,6 +271,31 @@
         console.error(err);
         document.getElementById(loaderId).outerHTML = `<div class="bubble bot">⚠️ Error loading data.</div>`;
       }
+    }
+
+    // 🎤 Voice input logic
+    function startListening() {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert('Voice recognition not supported in this browser');
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-IN';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        getAnswer();
+      };
+
+      recognition.onerror = (event) => {
+        alert('Error occurred in recognition: ' + event.error);
+      };
     }
   </script>
 </body>
