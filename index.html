@@ -241,7 +241,7 @@ button {
 
       try {
         const foundAnswer = getBestMatch(question.toLowerCase(), jsonData);
-        const answerText = foundAnswer || "❌ Sorry, I couldn't find an answer.";
+        const answerText = foundAnswer || "❗ This answer isn’t available in our database. Please email your query to hnit.support@ergode.com — we’ll get back with a solution and aim to include it in future bot updates.";
         typeText(loaderId, answerText);
         saveChat();
       } catch (err) {
