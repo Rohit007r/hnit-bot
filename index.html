@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HNIT Support Bot</title>
+  <title>HNIT Help Bot</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -83,6 +83,23 @@
     button:hover {
       background: #218838;
     }
+
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #555;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -97,31 +114,67 @@
   </div>
 
   <script>
-    async function getAnswer() {
-      const input = document.getElementById("userInput");
-      const question = input.value.trim();
-      const chatBox = document.getElementById("chatBox");
+    const chatBox = document.getElementById("chatBox");
+    const input = document.getElementById("userInput");
 
+    // Load chat history
+    window.onload = () => {
+      const history = localStorage.getItem("chatHistory");
+      if (history) chatBox.innerHTML = history;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    };
+
+    // Save chat history
+    function saveChat() {
+      localStorage.setItem("chatHistory", chatBox.innerHTML);
+    }
+
+    // Handle Enter key
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        getAnswer();
+      }
+    });
+
+    async function getAnswer() {
+      const question = input.value.trim();
       if (!question) return;
 
-      // Add user bubble
+      // Show user question
       chatBox.innerHTML += `<div class="bubble user">${question}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
       input.value = "";
+
+      // Show loading spinner
+      const loaderId = "loader_" + Date.now();
+      chatBox.innerHTML += `<div class="bubble bot" id="${loaderId}"><span class="loader"></span> Thinking...</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
 
       try {
         const res = await fetch("data.json");
         const data = await res.json();
 
-        const key = question.toLowerCase();
-        const answer = data[key] || "❌ Sorry, I couldn't find an answer.";
+        const lowerQ = question.toLowerCase();
+        let foundAnswer = null;
 
-        // Add bot bubble
-        chatBox.innerHTML += `<div class="bubble bot">${answer}</div>`;
+        // Fuzzy matching
+        for (let key in data) {
+          if (lowerQ.includes(key.toLowerCase())) {
+            foundAnswer = data[key];
+            break;
+          }
+        }
+
+        const answerText = foundAnswer || "❌ Sorry, I couldn't find an answer.";
+
+        // Replace loading bubble with answer
+        document.getElementById(loaderId).outerHTML = `<div class="bubble bot">${answerText}</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
+        saveChat();
+
       } catch (err) {
         console.error(err);
-        chatBox.innerHTML += `<div class="bubble bot">⚠️ Error loading data.</div>`;
+        document.getElementById(loaderId).outerHTML = `<div class="bubble bot">⚠️ Error loading data.</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
       }
     }
