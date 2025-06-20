@@ -1,0 +1,14 @@
+[
+  {
+    "keyword": "vpn not working",
+    "response": "no"
+  },
+  {
+    "keyword": "forgot password",
+    "response": "Click this link to reset your password."
+  },
+  {
+    "keyword": "printer issue",
+    "response": "Check cable or restart the printer."
+  }
+]
