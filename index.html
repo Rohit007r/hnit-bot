@@ -1,40 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HNIT Bot</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
-    input, button { padding: 10px; font-size: 16px; width: 100%; margin: 10px 0; }
-    #response { margin-top: 20px; font-weight: bold; color: green; }
-  </style>
-</head>
-<body>
-  <h2>Ask HNIT Bot</h2>
-  <input type="text" id="userInput" placeholder="e.g. forgot password">
-  <button onclick="getAnswer()">Ask</button>
-  <div id="response"></div>
-
-  <script>
-    function getAnswer() {
-      const input = document.getElementById("userInput").value.trim();
-      if (!input) {
-        document.getElementById("response").innerText = "Please enter a question.";
-        return;
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>HNIT Bot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
       }
+      input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+      }
+      button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+      #response {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Ask HNIT Bot</h2>
+    <input type="text" id="userInput" placeholder="Type your question here" />
+    <button onclick="getAnswer()">Submit</button>
+    <p id="response">Response will appear here</p>
 
-      const apiUrl = "https://script.google.com/macros/s/AKfycbwgdbrF_zh6IbRxOf6l-c5mUK2eYmW7mQqzd7bAMou8d132Fh4aKlsCV8CcRzJHQ0IH/exec?message=" + encodeURIComponent(input);
+    <script>
+      function getAnswer() {
+        const input = document.getElementById("userInput").value.trim();
 
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById("response").innerText = data.text;
-        })
-        .catch(error => {
-          console.error("Error:", error);
-          document.getElementById("response").innerText = "Error getting response.";
-        });
-    }
-  </script>
-</body>
+        if (!input) {
+          document.getElementById("response").innerText = "Please enter a question.";
+          return;
+        }
+
+        const url = `https://script.google.com/macros/s/AKfycbwgdbrF_zh6IbRxOf6l-c5mUK2eYmW7mQqzd7bAMou8d132Fh4aKlsCV8CcRzJHQ0IH/exec?message=${encodeURIComponent(input)}`;
+
+        fetch(url)
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("response").innerText = data.text;
+          })
+          .catch(err => {
+            console.error("Fetch error:", err);
+            document.getElementById("response").innerText = "Error fetching response.";
+          });
+      }
+    </script>
+  </body>
 </html>
+
