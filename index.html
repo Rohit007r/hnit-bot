@@ -136,6 +136,30 @@
       }
     });
 
+    // Fuzzy match logic
+    function getBestMatch(input, data) {
+      let bestMatch = null;
+      let highestScore = 0;
+
+      for (let key in data) {
+        const keyWords = key.toLowerCase().split(/\s+/);
+        let matchCount = 0;
+
+        keyWords.forEach(word => {
+          if (input.includes(word)) matchCount++;
+        });
+
+        const score = matchCount / keyWords.length;
+
+        if (score > highestScore && score >= 0.5) {
+          highestScore = score;
+          bestMatch = data[key];
+        }
+      }
+
+      return bestMatch;
+    }
+
     async function getAnswer() {
       const question = input.value.trim();
       if (!question) return;
@@ -145,7 +169,7 @@
       chatBox.scrollTop = chatBox.scrollHeight;
       input.value = "";
 
-      // Show loading spinner
+      // Show loading bubble
       const loaderId = "loader_" + Date.now();
       chatBox.innerHTML += `<div class="bubble bot" id="${loaderId}"><span class="loader"></span> Thinking...</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
@@ -155,19 +179,10 @@
         const data = await res.json();
 
         const lowerQ = question.toLowerCase();
-        let foundAnswer = null;
-
-        // Fuzzy matching
-        for (let key in data) {
-          if (lowerQ.includes(key.toLowerCase())) {
-            foundAnswer = data[key];
-            break;
-          }
-        }
-
+        const foundAnswer = getBestMatch(lowerQ, data);
         const answerText = foundAnswer || "❌ Sorry, I couldn't find an answer.";
 
-        // Replace loading bubble with answer
+        // Replace loading with bot reply
         document.getElementById(loaderId).outerHTML = `<div class="bubble bot">${answerText}</div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
         saveChat();
