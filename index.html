@@ -3,37 +3,89 @@
 <head>
   <title>HNIT Support Bot</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: #f7f9fb; }
-    input, button { padding: 10px; width: 100%; margin-top: 10px; font-size: 16px; }
-    .chat-box { margin-top: 20px; }
-    .user, .bot { margin: 10px 0; }
-    .user { color: blue; }
-    .bot { color: green; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    #chat {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .user {
+      background-color: #d0ebff;
+      text-align: right;
+    }
+    .bot {
+      background-color: #e6ffe6;
+      text-align: left;
+    }
+    #inputArea {
+      margin-top: 20px;
+      display: flex;
+    }
+    #userInput {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
-  <h2>🤖 HNIT Help Desk</h2>
-  <input type="text" id="query" placeholder="Type your IT question..." />
-  <button onclick="sendMessage()">Send</button>
 
-  <div class="chat-box" id="chatBox"></div>
+<div id="chat">
+  <h2>🤖 HNIT Bot</h2>
+  <div id="chatBox"></div>
+  <div id="inputArea">
+    <input type="text" id="userInput" placeholder="Type your issue here..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
 
-  <script>
-    async function sendMessage() {
-      const msg = document.getElementById("query").value.trim();
-      if (!msg) return;
-      document.getElementById("chatBox").innerHTML += `<div class="user"><b>You:</b> ${msg}</div>`;
+<script>
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwgdbrF_zh6IbRxOf6l-c5mUK2eYmW7mQqzd7bAMou8d132Fh4aKlsCV8CcRzJHQ0IH/exec";
 
-      const res = await fetch("https://script.google.com/macros/s/AKfycbyVMUH5ajM963K8GE4RR5nvtuUFGS4pqjmpo_rSXB5Yb4hv89BYOn3_hqUxzRvWtfPehQ/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: msg })
+  function sendMessage() {
+    const inputBox = document.getElementById("userInput");
+    const userText = inputBox.value.trim();
+    if (!userText) return;
+
+    appendMessage(userText, 'user');
+    inputBox.value = "";
+
+    fetch(WEB_APP_URL + "?message=" + encodeURIComponent(userText))
+      .then(response => response.json())
+      .then(data => {
+        const botText = data.text || "Sorry, I didn't get that.";
+        appendMessage(botText, 'bot');
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        appendMessage("Error contacting bot.", 'bot');
       });
+  }
 
-      const data = await res.json();
-      document.getElementById("chatBox").innerHTML += `<div class="bot"><b>HNIT:</b> ${data.reply}</div>`;
-      document.getElementById("query").value = "";
-    }
-  </script>
+  function appendMessage(text, sender) {
+    const msgDiv = document.createElement("div");
+    msgDiv.className = `message ${sender}`;
+    msgDiv.innerText = text;
+    document.getElementById("chatBox").appendChild(msgDiv);
+  }
+</script>
+
 </body>
 </html>
