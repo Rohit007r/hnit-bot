@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HNIT Support Bot</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: #f7f9fb; }
+    input, button { padding: 10px; width: 100%; margin-top: 10px; font-size: 16px; }
+    .chat-box { margin-top: 20px; }
+    .user, .bot { margin: 10px 0; }
+    .user { color: blue; }
+    .bot { color: green; }
+  </style>
+</head>
+<body>
+  <h2>🤖 HNIT Help Desk</h2>
+  <input type="text" id="query" placeholder="Type your IT question..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <div class="chat-box" id="chatBox"></div>
+
+  <script>
+    async function sendMessage() {
+      const msg = document.getElementById("query").value.trim();
+      if (!msg) return;
+      document.getElementById("chatBox").innerHTML += `<div class="user"><b>You:</b> ${msg}</div>`;
+
+      const res = await fetch("https://script.google.com/macros/s/AKfycbyVMUH5ajM963K8GE4RR5nvtuUFGS4pqjmpo_rSXB5Yb4hv89BYOn3_hqUxzRvWtfPehQ/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+
+      const data = await res.json();
+      document.getElementById("chatBox").innerHTML += `<div class="bot"><b>HNIT:</b> ${data.reply}</div>`;
+      document.getElementById("query").value = "";
+    }
+  </script>
+</body>
+</html>
