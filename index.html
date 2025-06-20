@@ -22,7 +22,7 @@
       }
 
       try {
-        const res = await fetch("https://api.airtable.com/v0/appcQd8JkJJg5lTOU/Table%201", {
+        const res = await fetch("https://api.airtable.com/v0/appcQd8JkJJg5lTOU/Sheet1", {
           headers: {
             Authorization: "Bearer patQCECCcE8UDCTXn.365a702f76d9023e0ca7fc0a8fdb18a4e7b3272d344c2fb6a1d7946a2fe1a571"
           }
@@ -30,7 +30,6 @@
 
         const data = await res.json();
 
-        // Find a record where Question matches the input
         const match = data.records.find(record => {
           const q = record.fields.Question?.toLowerCase();
           return q === input;
