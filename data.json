@@ -1,14 +1,14 @@
-[
-  {
-    "keyword": "vpn not working",
-    "response": "no"
-  },
-  {
-    "keyword": "forgot password",
-    "response": "Click this link to reset your password."
-  },
-  {
-    "keyword": "printer issue",
-    "response": "Check cable or restart the printer."
-  }
-]
+{
+  "vpn not working": "Try restarting the VPN or checking your firewall settings.",
+  "forgot password": "Click here to reset your password.",
+  "printer issue": "Check the cables and restart the printer.",
+  "1": "a",
+  "2": "b",
+  "3": "c",
+  "4": "d",
+  "5": "e",
+  "6": "f",
+  "7": "g",
+  "8": "h"
+}
+
