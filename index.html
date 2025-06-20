@@ -2,36 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HNIT Bot (No Google Sheet)</title>
+  <title>HNIT Bot (Airtable)</title>
 </head>
 <body>
   <h1>Ask HNIT Bot</h1>
-  <input type="text" id="userInput" placeholder="Type your question" />
+  <input type="text" id="userInput" placeholder="Type your question..." />
   <button onclick="getAnswer()">Ask</button>
   <p id="response">Response will appear here</p>
 
   <script>
     async function getAnswer() {
       const input = document.getElementById("userInput").value.trim().toLowerCase();
+      const responseEl = document.getElementById("response");
+      responseEl.innerText = "Looking up...";
+
       if (!input) {
-        document.getElementById("response").innerText = "Please enter a question.";
+        responseEl.innerText = "Please enter a question.";
         return;
       }
 
       try {
-        const res = await fetch('data.json');
+        const res = await fetch("https://api.airtable.com/v0/appcQd8JkJJg5lTOU/Table%201", {
+          headers: {
+            Authorization: "Bearer patQCECCcE8UDCTXn.365a702f76d9023e0ca7fc0a8fdb18a4e7b3272d344c2fb6a1d7946a2fe1a571"
+          }
+        });
+
         const data = await res.json();
 
-        const match = data.find(item => input === item.keyword.toLowerCase());
+        // Find a record where Question matches the input
+        const match = data.records.find(record => {
+          const q = record.fields.Question?.toLowerCase();
+          return q === input;
+        });
 
-        if (match) {
-          document.getElementById("response").innerText = match.response;
-        } else {
-          document.getElementById("response").innerText = "Sorry, no matching answer found.";
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        document.getElementById("response").innerText = "Error loading data.";
+        responseEl.innerText = match
+          ? match.fields.Answer
+          : "❌ No matching answer found.";
+      } catch (err) {
+        console.error("Error fetching from Airtable:", err);
+        responseEl.innerText = "⚠️ Error fetching data.";
       }
     }
   </script>
