@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8" />
   <title>HNIT Help Bot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,144 +19,41 @@
   --bot-bg: #2c2c2c;
   --suggestion-bg: #3949ab;
   --border: #444;
-}
+}body { font-family: 'Segoe UI', sans-serif; background: var(--bg-light); margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--text-color); transition: background 0.3s, color 0.3s; }
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: var(--bg-light);
-  margin: 0;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  color: var(--text-color);
-  transition: background 0.3s, color 0.3s;
-}
+.chat-container { width: 100%; max-width: 720px; background: var(--container-bg); border-radius: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); padding: 24px; display: flex; flex-direction: column; border: 2px solid var(--border); }
 
-.chat-container {
-  width: 100%;
-  max-width: 720px;
-  background: var(--container-bg);
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  border: 2px solid var(--border);
-}
+h1, h2 { text-align: center; margin: 0; }
 
-h1, h2 {
-  text-align: center;
-  margin: 0;
-}
+h1 { font-size: 28px; }
 
-h1 {
-  font-size: 28px;
-}
+h2 { font-weight: normal; margin-bottom: 16px; }
 
-h2 {
-  font-weight: normal;
-  margin-bottom: 16px;
-}
+.bot-logo { text-align: center; font-size: 42px; margin-bottom: 10px; }
 
-.bot-logo {
-  text-align: center;
-  font-size: 42px;
-  margin-bottom: 10px;
-}
+.chat-box { height: 360px; overflow-y: auto; border: 1px solid var(--border); border-radius: 16px; padding: 12px; background: var(--container-bg); margin-bottom: 15px; }
 
-.chat-box {
-  height: 360px;
-  overflow-y: auto;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 12px;
-  background: var(--container-bg);
-  margin-bottom: 15px;
-}
+.bubble { padding: 14px 18px; border-radius: 20px; margin: 6px 0; max-width: 75%; word-wrap: break-word; font-size: 15px; line-height: 1.4; }
 
-.bubble {
-  padding: 14px 18px;
-  border-radius: 20px;
-  margin: 6px 0;
-  max-width: 75%;
-  word-wrap: break-word;
-  font-size: 15px;
-  line-height: 1.4;
-}
+.user { background: var(--user-bg); color: white; float: right; clear: both; }
 
-.user {
-  background: var(--user-bg);
-  color: white;
-  float: right;
-  clear: both;
-}
+.bot { background: var(--bot-bg); color: var(--text-color); float: left; clear: both; }
 
-.bot {
-  background: var(--bot-bg);
-  color: var(--text-color);
-  float: left;
-  clear: both;
-}
+.input-area { display: flex; flex-wrap: wrap; gap: 8px; }
 
-.input-area {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+input[type="text"] { flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 15px; background: white; }
 
-input[type="text"] {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 15px;
-  background: white;
-}
+button { padding: 12px 16px; border-radius: 12px; font-size: 15px; cursor: pointer; border: none; transition: 0.2s ease; }
 
-button {
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 15px;
-  cursor: pointer;
-  border: none;
-  transition: 0.2s ease;
-}
+.mic-btn { background: #ff7043; color: white; } .ask-btn { background: #4caf50; color: white; } .clear-btn { background: #f44336; color: white; } .dark-btn { background: #607d8b; color: white; }
 
-.mic-btn { background: #ff7043; color: white; }
-.ask-btn { background: #4caf50; color: white; }
-.clear-btn { background: #f44336; color: white; }
-.dark-btn { background: #607d8b; color: white; }
+.suggestions { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
 
-.suggestions {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-}
+.suggestion { background: var(--suggestion-bg); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 14px; }
 
-.suggestion {
-  background: var(--suggestion-bg);
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-}
+.footer { text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-color); }
 
-.footer {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 13px;
-  color: var(--text-color);
-}
-
-@media (max-width: 480px) {
-  h1 { font-size: 22px; }
-  h2 { font-size: 17px; }
-  .chat-box { height: 300px; }
-  button { flex: 1; }
-}
+@media (max-width: 480px) { h1 { font-size: 22px; } h2 { font-size: 17px; } .chat-box { height: 300px; } button { flex: 1; } }
 
   </style>
 </head>
@@ -184,130 +80,142 @@ button {
     const chatBox = document.getElementById("chatBox");
     const input = document.getElementById("userInput");
     const suggestionBox = document.getElementById("suggestionBox");
-    let jsonData = {};
+    let jsonData = {};function saveChat() {
+  localStorage.setItem("chatHistory", chatBox.innerHTML);
+}
 
-    function saveChat() {
-      localStorage.setItem("chatHistory", chatBox.innerHTML);
+function clearChat() {
+  if (confirm("Clear all chat?")) {
+    chatBox.innerHTML = "";
+    localStorage.removeItem("chatHistory");
+    suggestionBox.innerHTML = "";
+    input.value = "";
+  }
+}
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+}
+
+async function getAnswer() {
+  const question = input.value.trim();
+  if (!question) return;
+
+  suggestionBox.innerHTML = "";
+  chatBox.innerHTML += `<div class="bubble user">${question}</div>`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+  input.value = "";
+
+  const loaderId = "loader_" + Date.now();
+  chatBox.innerHTML += `<div class="bubble bot" id="${loaderId}">Typing...</div>`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  try {
+    const answerText = jsonData[question.toLowerCase()] || 
+      "❗ This answer isn’t available in our database. Please email your query to hnit.support@ergode.com — we’ll get back with a solution and aim to include it in future bot updates.";
+
+    typeText(loaderId, answerText);
+    saveChat();
+  } catch (err) {
+    document.getElementById(loaderId).outerHTML = `<div class="bubble bot">⚠️ Error loading data.</div>`;
+  }
+}
+
+function typeText(elementId, text, speed = 20) {
+  const element = document.getElementById(elementId);
+  let index = 0;
+  const interval = setInterval(() => {
+    element.textContent = text.slice(0, ++index);
+    if (index >= text.length) {
+      clearInterval(interval);
+      element.classList.add("bot");
+      saveChat();
     }
+  }, speed);
+}
 
-    function clearChat() {
-      if (confirm("Clear all chat?")) {
-        chatBox.innerHTML = "";
-        localStorage.removeItem("chatHistory");
-        suggestionBox.innerHTML = "";
-        input.value = "";
-      }
-    }
+function startListening() {
+  if (!('webkitSpeechRecognition' in window)) {
+    alert('Voice recognition not supported in this browser');
+    return;
+  }
 
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark");
-    }
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = 'en-IN';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
-    async function getAnswer() {
-      const question = input.value.trim();
-      if (!question) return;
+  recognition.start();
 
-      suggestionBox.innerHTML = "";
-      chatBox.innerHTML += `<div class="bubble user">${question}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
-      input.value = "";
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    input.value = transcript;
+    getAnswer();
+  };
 
-      const loaderId = "loader_" + Date.now();
-      chatBox.innerHTML += `<div class="bubble bot" id="${loaderId}">Typing...</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
+  recognition.onerror = (event) => {
+    alert('Error occurred in recognition: ' + event.error);
+  };
+}
 
-      try {
-        const answerText = jsonData[question] || 
-          "❗ This answer isn’t available in our database. Please email your query to hnit.support@ergode.com — we’ll get back with a solution and aim to include it in future bot updates.";
+input.addEventListener("input", () => {
+  const text = input.value.toLowerCase();
+  suggestionBox.innerHTML = "";
+  if (!text) return;
 
-        typeText(loaderId, answerText);
-        saveChat();
-      } catch (err) {
-        document.getElementById(loaderId).outerHTML = `<div class="bubble bot">⚠️ Error loading data.</div>`;
-      }
-    }
+  const matches = Object.keys(jsonData)
+    .filter(q => q.toLowerCase().includes(text))
+    .slice(0, 5);
 
-    function typeText(elementId, text, speed = 20) {
-      const element = document.getElementById(elementId);
-      let index = 0;
-      const interval = setInterval(() => {
-        element.textContent = text.slice(0, ++index);
-        if (index >= text.length) {
-          clearInterval(interval);
-          element.classList.add("bot");
-          saveChat();
-        }
-      }, speed);
-    }
-
-    function startListening() {
-      if (!('webkitSpeechRecognition' in window)) {
-        alert('Voice recognition not supported in this browser');
-        return;
-      }
-
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = 'en-IN';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-
-      recognition.start();
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        input.value = transcript;
-        getAnswer();
-      };
-
-      recognition.onerror = (event) => {
-        alert('Error occurred in recognition: ' + event.error);
-      };
-    }
-
-    input.addEventListener("input", () => {
-      const text = input.value.toLowerCase();
-      suggestionBox.innerHTML = "";
-      if (!text) return;
-
-      const matches = Object.keys(jsonData)
-        .filter(q => q.toLowerCase().includes(text))
-        .slice(0, 5);
-
-      matches.forEach(match => {
-        const div = document.createElement("div");
-        div.className = "suggestion";
-        div.innerText = match;
-        div.onclick = () => {
-          input.value = match;
-          getAnswer();
-        };
-        suggestionBox.appendChild(div);
-      });
-    });
-
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") getAnswer();
-    });
-
-    window.onload = async () => {
-      input.focus();
-      const history = localStorage.getItem("chatHistory");
-
-      if (history) {
-        chatBox.innerHTML = history;
-      } else {
-        chatBox.innerHTML = `<div class="bubble bot">👋 Hello! I'm the HNIT Help Bot. How can I assist you today?</div>`;
-        saveChat();
-      }
-
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      try {
-        const res = await fetch("data.json");
-        jsonData = await res.json();
-      } catch (error) {
-        console.error("Failed to load data.json", error);
-      }
+  matches.forEach(match => {
+    const div = document.createElement("div");
+    div.className = "suggestion";
+    div.innerText = match;
+    div.onclick = () => {
+      input.value = match;
+      getAnswer();
     };
-  </script></body>
+    suggestionBox.appendChild(div);
+  });
+});
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") getAnswer();
+});
+
+async function loadCSVData() {
+  const res = await fetch("https://raw.githubusercontent.com/Rohit007r/hnit-bot/refs/heads/main/data.csv");
+  const text = await res.text();
+  const lines = text.trim().split("\n");
+
+  lines.forEach(line => {
+    const [question, answer] = line.split(/,(.+)/);
+    if (question && answer) {
+      jsonData[question.trim().toLowerCase()] = answer.trim();
+    }
+  });
+}
+
+window.onload = async () => {
+  input.focus();
+  const history = localStorage.getItem("chatHistory");
+
+  if (history) {
+    chatBox.innerHTML = history;
+  } else {
+    chatBox.innerHTML = `<div class="bubble bot">👋 Hello! I'm the HNIT Help Bot. How can I assist you today?</div>`;
+    saveChat();
+  }
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  try {
+    await loadCSVData();
+  } catch (error) {
+    console.error("Failed to load data.csv", error);
+  }
+};
+
+</script></body>
+
 </html>
