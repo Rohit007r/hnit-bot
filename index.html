@@ -56,13 +56,6 @@
       left: 0;
     }
 
-    .sidebar h3 {
-      margin-bottom: 1rem;
-      font-size: 1rem;
-      border-bottom: 1px solid #334155;
-      padding-bottom: 0.4rem;
-    }
-
     .sidebar a, .sidebar button {
       display: block;
       background: none;
@@ -150,10 +143,9 @@
       color: var(--text);
     }
 
-    /* 🌙 Dark mode override for bot bubble */
-    .dark .bubble.bot {
-      background: #f9a8d4;
-      color: #1e3a8a;
+    body.dark .bubble.bot {
+      background: #ffc0cb;
+      color: #064e3b;
     }
 
     .input-area {
@@ -163,6 +155,10 @@
       background: white;
       border-top: 1px solid #e5e7eb;
       margin-left: 10px;
+    }
+
+    body.dark .input-area {
+      background: #1e293b;
     }
 
     .input-area input {
@@ -187,25 +183,24 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      background: var(--bg);
+      background: #eef2ff;
       position: relative;
       z-index: 10;
       margin-left: 20px;
     }
 
     .suggestion {
-      background: #cbd5e1;
-      color: var(--text);
+      background: #dbeafe;
       padding: 6px 10px;
       border-radius: 8px;
       font-size: 0.85rem;
       cursor: pointer;
+      color: #000;
     }
 
-    /* 🌙 Dark mode override for suggestion bubbles */
-    .dark .suggestion {
-      background: #f9a8d4;
-      color: #065f46; /* dark green */
+    body.dark .suggestion {
+      background: #ffc0cb;
+      color: #064e3b;
     }
 
     @keyframes fadeIn {
@@ -221,13 +216,6 @@
       margin-bottom: 4px;
     }
 
-    .sidebar details div a,
-    .sidebar details div button {
-      font-size: 0.85rem;
-      margin: 2px 0;
-      padding: 2px;
-    }
-
     .sidebar:hover {
       left: 0 !important;
     }
@@ -238,7 +226,6 @@
   </style>
 </head>
 <body>
-  <!-- Menu and Layout -->
   <button class="menu-btn" onclick="toggleSidebar()">☰ Menu</button>
   <div class="wrapper">
     <div class="sidebar" id="sidebar">
@@ -287,7 +274,6 @@
     </div>
   </div>
 
-  <!-- Script Section -->
   <script>
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('mainContent');
@@ -351,10 +337,18 @@
         "❗ I couldn't find the answer. Please contact hnit.support@ergode.com.";
 
       setTimeout(() => {
-        document.getElementById(loaderId).innerText = answer;
+        const loader = document.getElementById(loaderId);
+        if (loader) loader.innerText = answer;
         localStorage.setItem("chatHistory", chatBox.innerHTML);
       }, 600);
     }
+
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        getAnswer();
+      }
+    });
 
     input.addEventListener("input", () => {
       const text = input.value.toLowerCase();
