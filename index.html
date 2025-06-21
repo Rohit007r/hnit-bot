@@ -184,7 +184,7 @@
       background: #eef2ff;
       position: relative;
       z-index: 10;
-      margin-left: 20px; /* 👈 Fixed: shift suggestion box right */
+      margin-left: 20px;
     }
 
     .suggestion {
@@ -232,7 +232,6 @@
         <details><summary><strong>🔗 Useful Links</strong></summary><div style="margin-left: 10px;">
           <a href="https://support.google.com" target="_blank">🌐 Google Help</a>
           <a href="https://support.microsoft.com" target="_blank">🪟 Microsoft Support</a>
-          <a href="https://speedtest.net" target="_blank">📶 Speed Test</a>
           <a href="https://ergode.keka.com/#/me/helpdesk/mytickets" target="_blank">🛠️ Ergode Helpdesk</a>
         </div></details><br>
         <details><summary><strong>⚙️ Options</strong></summary><div style="margin-left: 10px;">
@@ -241,6 +240,7 @@
           <button onclick="clearChat()">🧹 Clear Chat</button>
         </div></details><br>
         <details><summary><strong>📁 More Tools</strong></summary><div style="margin-left: 10px;">
+          <a href="https://speedtest.net" target="_blank">🌐 Internet Speed Test</a>
           <a href="https://keyboard-test.space/" target="_blank">⌨️ Online Keyboard Test</a>
           <a href="https://webcammictest.com/" target="_blank">🎥 Webcam Test</a>
           <a href="https://online-mic-test.com/" target="_blank">🎙️ Mic Test</a>
@@ -257,6 +257,407 @@
     </div>
 
     <div class="main" id="mainContent">
+      <div style="text-align: center; font-size: 0.75rem; color: gray; margin-top: 10px;">
+        👨‍💻 Developed by Rohit Gupta
+      </div>
+      <div class="chat-header">🤖 HNIT Help Bot</div>
+      <div class="chat-box" id="chatBox"></div>
+      <div class="suggestions" id="suggestionBox"></div>
+      <div class="input-area">
+        <input type="text" id="userInput" placeholder="Ask me anything..." />
+        <button onclick="startListening()">🎤</button>
+        <button onclick="clearChat()">🧹</button>
+        <button onclick="exportToPDF()">📄</button>
+        <button onclick="getAnswer()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    let sidebarTimer;
+    const input = document.getElementById('userInput');
+    const chatBox = document.getElementById('chatBox');
+    const suggestionBox = document.getElementById('suggestionBox');
+    let jsonData = {};
+
+    function toggleSidebar() {
+      sidebar.classList.add('open');
+      mainContent.classList.add('shifted');
+      clearTimeout(sidebarTimer);
+      sidebarTimer = setTimeout(() => {
+        sidebar.classList.remove('open');
+        mainContent.classList.remove('shifted');
+      }, 5000);
+    }
+
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+    }
+
+    function clearChat() {
+      if (confirm("Clear all chat?")) {
+        chatBox.innerHTML = "";
+        localStorage.removeItem("chatHistory");
+        suggestionBox.innerHTML = "";
+        input.value = "";
+      }
+    }
+
+    function startListening() {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert('Voice recognition not supported');
+        return;
+      }
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-IN';
+      recognition.start();
+      recognition.onresult = (e) => {
+        input.value = e.results[0][0].transcript;
+        getAnswer();
+      };
+    }
+
+    function getAnswer() {
+      const question = input.value.trim();
+      if (!question) return;
+
+      suggestionBox.innerHTML = "";
+      chatBox.innerHTML += <div class="bubble user">${question}</div>;
+      chatBox.scrollTop = chatBox.scrollHeight;
+      input.value = "";
+
+      const loaderId = "bot_" + Date.now();
+      chatBox.innerHTML += <div class="bubble bot" id="${loaderId}">Typing...</div>;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      const answer = jsonData[question.toLowerCase()] || 
+        "❗ I couldn't find the answer. Please contact hnit.support@ergode.com.";
+
+      setTimeout(() => {
+        document.getElementById(loaderId).innerText = answer;
+        localStorage.setItem("chatHistory", chatBox.innerHTML);
+      }, 600);
+    }
+
+    input.addEventListener("input", () => {
+      const text = input.value.toLowerCase();
+      suggestionBox.innerHTML = "";
+      if (!text) return;
+      Object.keys(jsonData)
+        .filter(q => q.includes(text))
+        .slice(0, 5)
+        .forEach(match => {
+          const div = document.createElement("div");
+          div.className = "suggestion";
+          div.textContent = match;
+          div.onclick = () => {
+            input.value = match;
+            getAnswer();
+          };
+          suggestionBox.appendChild(div);
+        });
+    });
+
+    window.onload = async () => {
+      const history = localStorage.getItem("chatHistory");
+      if (history) chatBox.innerHTML = history;
+      else chatBox.innerHTML = <div class="bubble bot">👋 Hello! I'm the HNIT Help Bot. How can I assist you?</div>;
+      input.focus();
+      const res = await fetch("https://raw.githubusercontent.com/Rohit007r/hnit-bot/main/data.csv");
+      const text = await res.text();
+      text.split('\n').forEach(line => {
+        const [q, a] = line.split(/,(.+)/);
+        if (q && a) jsonData[q.trim().toLowerCase()] = a.trim();
+      });
+
+      sidebar.classList.add('open');
+      mainContent.classList.add('shifted');
+      setTimeout(() => {
+        sidebar.classList.remove('open');
+        mainContent.classList.remove('shifted');
+      }, 3000);
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    function exportToPDF() {
+      const chatContent = document.getElementById("chatBox").innerText;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text(chatContent, 10, 10);
+      doc.save("chat-history.pdf");
+    }
+  </script>
+</body>
+</html>
+
+You, 10 min
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HNIT Help Bot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --text: #1f2937;
+      --accent: #6366f1;
+      --sidebar-bg: #111827;
+      --sidebar-text: #f3f4f6;
+      --header-height: 60px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .dark {
+      --bg: #0f172a;
+      --text: #e2e8f0;
+      --sidebar-bg: #1e293b;
+      --sidebar-text: #cbd5e1;
+    }
+
+    .wrapper {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      padding: 1rem;
+      position: fixed;
+      top: 0;
+      left: -260px;
+      height: 100%;
+      transition: left 0.4s ease-in-out;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar h3 {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 0.4rem;
+    }
+
+    .sidebar a, .sidebar button {
+      display: block;
+      background: none;
+      border: none;
+      color: inherit;
+      text-align: left;
+      padding: 6px 0;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .sidebar .footer {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: auto;
+    }
+
+    .main {
+      margin-left: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      transition: margin-left 0.4s ease-in-out;
+    }
+
+    .main.shifted {
+      margin-left: 260px;
+    }
+
+    .menu-btn {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1100;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .chat-header {
+      text-align: center;
+      padding: 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+    }
+
+    .bubble {
+      padding: 12px 16px;
+      border-radius: 18px;
+      margin: 6px 0;
+      max-width: 75%;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .bubble.user {
+      align-self: flex-end;
+      background: var(--accent);
+      color: white;
+    }
+
+    .bubble.bot {
+      align-self: flex-start;
+      background: #f3f4f6;
+      color: var(--text);
+    }
+
+    .input-area {
+      display: flex;
+      padding: 1rem;
+      gap: 8px;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      margin-left: 10px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .input-area button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .suggestions {
+      padding: 0 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: var(--bg);
+      position: relative;
+      z-index: 10;
+      margin-left: 20px;
+    }
+
+    .suggestion {
+      background: #cbd5e1;
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hidden { display: none; }
+
+    .sidebar details summary {
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .sidebar details div a,
+    .sidebar details div button {
+      font-size: 0.85rem;
+      margin: 2px 0;
+      padding: 2px;
+    }
+
+    .sidebar:hover {
+      left: 0 !important;
+    }
+
+    .sidebar:hover ~ .main {
+      margin-left: 260px !important;
+    }
+  </style>
+</head>
+<body>
+  <button class="menu-btn" onclick="toggleSidebar()">☰ Menu</button>
+  <div class="wrapper">
+    <div class="sidebar" id="sidebar">
+      <div style="margin-top: 60px;">
+        <details><summary><strong>🔗 Useful Links</strong></summary><div style="margin-left: 10px;">
+          <a href="https://support.google.com" target="_blank">🌐 Google Help</a>
+          <a href="https://support.microsoft.com" target="_blank">🪟 Microsoft Support</a>
+          <a href="https://ergode.keka.com/#/me/helpdesk/mytickets" target="_blank">🛠️ Ergode Helpdesk</a>
+        </div></details><br>
+        <details><summary><strong>⚙️ Options</strong></summary><div style="margin-left: 10px;">
+          <button onclick="toggleDark()">🌙 Dark Mode</button>
+          <button onclick="startListening()">🎤 Voice Input</button>
+          <button onclick="clearChat()">🧹 Clear Chat</button>
+        </div></details><br>
+        <details><summary><strong>📁 More Tools</strong></summary><div style="margin-left: 10px;">
+          <a href="https://speedtest.net" target="_blank">🌐 Internet Speed Test</a>
+          <a href="https://keyboard-test.space/" target="_blank">⌨️ Online Keyboard Test</a>
+          <a href="https://webcammictest.com/" target="_blank">🎥 Webcam Test</a>
+          <a href="https://online-mic-test.com/" target="_blank">🎙️ Mic Test</a>
+          <a href="https://www.onlinemictest.com/sound-test/" target="_blank">🔊 Speaker Test</a>
+          <a href="https://whatismyipaddress.com/" target="_blank">🌐 My Public IP</a>
+          <a href="https://www.whatismybrowser.com/" target="_blank">🧭 Browser Info</a>
+        </div></details><br>
+      </div>
+      <div class="footer">
+        📧 hnit.support@ergode.com<br>
+        📞 9614196729<br><br>
+        👨‍💻 Developed by Rohit Gupta
+      </div>
+    </div>
+
+    <div class="main" id="mainContent">
+      <div style="text-align: center; font-size: 0.75rem; color: gray; margin-top: 10px;">
+        👨‍💻 Developed by Rohit Gupta
+      </div>
       <div class="chat-header">🤖 HNIT Help Bot</div>
       <div class="chat-box" id="chatBox"></div>
       <div class="suggestions" id="suggestionBox"></div>
@@ -338,6 +739,13 @@
       }, 600);
     }
 
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        getAnswer();
+      }
+    });
+
     input.addEventListener("input", () => {
       const text = input.value.toLowerCase();
       suggestionBox.innerHTML = "";
@@ -390,3 +798,4 @@
   </script>
 </body>
 </html>
+
