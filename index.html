@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -183,6 +182,9 @@
       flex-wrap: wrap;
       gap: 6px;
       background: #eef2ff;
+      position: relative;
+      z-index: 10;
+      margin-left: 20px; /* 👈 Fixed: shift suggestion box right */
     }
 
     .suggestion {
@@ -199,113 +201,55 @@
     }
 
     .hidden { display: none; }
-  
-.sidebar details summary {
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-bottom: 4px;
-}
-.sidebar details div a,
-.sidebar details div button {
-  font-size: 0.85rem;
-  margin: 2px 0;
-  padding: 2px;
-}
 
-</style>
+    .sidebar details summary {
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
 
-<style>
-  .sidebar {
-    transition: left 0.4s ease-in-out;
-  }
-  .sidebar:hover {
-    left: 0 !important;
-  }
-  .sidebar a, .sidebar button {
-    margin-left: 4px;
-  }
+    .sidebar details div a,
+    .sidebar details div button {
+      font-size: 0.85rem;
+      margin: 2px 0;
+      padding: 2px;
+    }
 
-.sidebar details summary {
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-bottom: 4px;
-}
-.sidebar details div a,
-.sidebar details div button {
-  font-size: 0.85rem;
-  margin: 2px 0;
-  padding: 2px;
-}
+    .sidebar:hover {
+      left: 0 !important;
+    }
 
-</style>
-
-
-<style>
-  .wrapper {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-    transition: margin-left 0.3s ease;
-  }
-
-  .sidebar:hover ~ .main {
-    margin-left: 260px !important;
-  }
-
-  .main {
-    margin-left: 0;
-    transition: margin-left 0.3s ease;
-  }
-
-  .chat-box, .input-area {
-    width: calc(100% - 32px); /* Padding correction */
-    box-sizing: border-box;
-  }
-
-.sidebar details summary {
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-bottom: 4px;
-}
-.sidebar details div a,
-.sidebar details div button {
-  font-size: 0.85rem;
-  margin: 2px 0;
-  padding: 2px;
-}
-
-</style>
-
+    .sidebar:hover ~ .main {
+      margin-left: 260px !important;
+    }
+  </style>
 </head>
 <body>
   <button class="menu-btn" onclick="toggleSidebar()">☰ Menu</button>
   <div class="wrapper">
     <div class="sidebar" id="sidebar">
-<div style="margin-top: 60px;">
-<details><summary><strong>🔗 Useful Links</strong></summary><div style="margin-left: 10px;">
-  <a href="https://support.google.com" target="_blank">🌐 Google Help</a>
-  <a href="https://support.microsoft.com" target="_blank">🪟 Microsoft Support</a>
-  <a href="https://speedtest.net" target="_blank">📶 Speed Test</a>
-  <a href="https://ergode.keka.com/#/me/helpdesk/mytickets" target="_blank">🛠️ Ergode Helpdesk</a>
-</div></details>
-<br>
-<details><summary><strong>⚙️ Options</strong></summary><div style="margin-left: 10px;">
-  <button onclick="toggleDark()">🌙 Dark Mode</button>
-  <button onclick="startListening()">🎤 Voice Input</button>
-  <button onclick="clearChat()">🧹 Clear Chat</button>
-</div></details>
-<br>
-<details><summary><strong>📁 More Tools</strong></summary><div style="margin-left: 10px;">
-  <a href="https://keyboard-test.space/" target="_blank">⌨️ Online Keyboard Test</a>
-  <a href="https://webcammictest.com/" target="_blank">🎥 Webcam Test</a>
-  <a href="https://online-mic-test.com/" target="_blank">🎙️ Mic Test</a>
-  <a href="https://www.onlinemictest.com/sound-test/" target="_blank">🔊 Speaker Test</a>
-  <a href="https://whatismyipaddress.com/" target="_blank">🌐 My Public IP</a>
-  <a href="https://www.whatismybrowser.com/" target="_blank">🧭 Browser Info</a>
-</div></details>
-<br>
-</div>
-<div class="footer">
+      <div style="margin-top: 60px;">
+        <details><summary><strong>🔗 Useful Links</strong></summary><div style="margin-left: 10px;">
+          <a href="https://support.google.com" target="_blank">🌐 Google Help</a>
+          <a href="https://support.microsoft.com" target="_blank">🪟 Microsoft Support</a>
+          <a href="https://speedtest.net" target="_blank">📶 Speed Test</a>
+          <a href="https://ergode.keka.com/#/me/helpdesk/mytickets" target="_blank">🛠️ Ergode Helpdesk</a>
+        </div></details><br>
+        <details><summary><strong>⚙️ Options</strong></summary><div style="margin-left: 10px;">
+          <button onclick="toggleDark()">🌙 Dark Mode</button>
+          <button onclick="startListening()">🎤 Voice Input</button>
+          <button onclick="clearChat()">🧹 Clear Chat</button>
+        </div></details><br>
+        <details><summary><strong>📁 More Tools</strong></summary><div style="margin-left: 10px;">
+          <a href="https://keyboard-test.space/" target="_blank">⌨️ Online Keyboard Test</a>
+          <a href="https://webcammictest.com/" target="_blank">🎥 Webcam Test</a>
+          <a href="https://online-mic-test.com/" target="_blank">🎙️ Mic Test</a>
+          <a href="https://www.onlinemictest.com/sound-test/" target="_blank">🔊 Speaker Test</a>
+          <a href="https://whatismyipaddress.com/" target="_blank">🌐 My Public IP</a>
+          <a href="https://www.whatismybrowser.com/" target="_blank">🧭 Browser Info</a>
+        </div></details><br>
+      </div>
+      <div class="footer">
         📧 hnit.support@ergode.com<br>
         📞 9614196729<br><br>
         👨‍💻 Developed by Rohit Gupta
@@ -319,9 +263,9 @@
       <div class="input-area">
         <input type="text" id="userInput" placeholder="Ask me anything..." />
         <button onclick="startListening()">🎤</button>
-<button onclick="clearChat()">🧹</button>
-<button onclick="exportToPDF()">📄</button>
-<button onclick="getAnswer()">Send</button>
+        <button onclick="clearChat()">🧹</button>
+        <button onclick="exportToPDF()">📄</button>
+        <button onclick="getAnswer()">Send</button>
       </div>
     </div>
   </div>
@@ -434,36 +378,15 @@
     };
   </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-  function startListening() {
-    if (!('webkitSpeechRecognition' in window)) {
-      alert('Voice recognition not supported in this browser');
-      return;
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    function exportToPDF() {
+      const chatContent = document.getElementById("chatBox").innerText;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text(chatContent, 10, 10);
+      doc.save("chat-history.pdf");
     }
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'en-IN';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    recognition.start();
-    recognition.onresult = function(event) {
-      const transcript = event.results[0][0].transcript;
-      document.getElementById("userInput").value = transcript;
-      getAnswer();
-    };
-    recognition.onerror = function(event) {
-      console.error("Speech recognition error", event.error);
-    };
-  }
-
-  function exportToPDF() {
-    const chatContent = document.getElementById("chatBox").innerText;
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.text(chatContent, 10, 10);
-    doc.save("chat-history.pdf");
-  }
-</script>
-
+  </script>
 </body>
 </html>
