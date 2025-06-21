@@ -1,0 +1,103 @@
+Question,Answer,Keywords
+vpn not working,Try restarting the VPN or checking your firewall settings.,vpn|not|working
+forgot password,Click here to reset your password.,forgot|password
+printer issue,Check the cables and restart the printer.,printer|issue
+system not turning on,Check power cables and battery. Try a hard reset.,system|not|turning|on
+slow computer,"Clear cache, temporary files, and check for malware.",slow|computer
+no internet connection,"Check router, modem, and network settings.",no|internet|connection
+blue screen error,Note the error code and restart. Update drivers if it repeats.,blue|screen|error
+unable to connect to Wi-Fi,"Check if Wi-Fi is on, forget and reconnect to the network.",unable|to|connect|to|wi-fi
+keyboard not working,Reconnect the keyboard or try another port.,keyboard|not|working
+mouse not responding,Check the USB port or battery if it's wireless.,mouse|not|responding
+computer freezing,Check running tasks in Task Manager and restart.,computer|freezing
+battery draining fast,"Reduce screen brightness, disable background apps.",battery|draining|fast
+unresponsive application,Force close and restart the app.,unresponsive|application
+unable to login,Check username and password. Try resetting password if needed.,unable|to|login
+forgot email password,Visit the password reset page or contact admin.,forgot|email|password
+locked out of account,Wait for auto-unlock or contact support to unlock.,locked|out|of|account
+two-factor authentication failed,Use backup code or contact support to reset.,two-factor|authentication|failed
+password expired,Update your password from the login screen.,password|expired
+change email password,Go to settings and choose 'Change Password'.,change|email|password
+account disabled,Contact your administrator to reactivate your account.,account|disabled
+email not syncing,Check server settings and internet connection.,email|not|syncing
+outlook not opening,Restart computer and try in safe mode.,outlook|not|opening
+shared folder access denied,Check if you have correct permissions.,shared|folder|access|denied
+projector not displaying,Check HDMI/VGA connection and select the correct input.,projector|not|displaying
+no sound,Check speaker settings and output devices.,no|sound
+mic not working,Check input settings and app permissions.,mic|not|working
+monitor flickering,Check display cable or refresh rate settings.,monitor|flickering
+external hard drive not showing,Try different port or update disk drivers.,external|hard|drive|not|showing
+cannot print,"Check paper tray, ink, and reinstall printer drivers.",cannot|print
+browser not opening,Clear cache or try in incognito mode.,browser|not|opening
+website not loading,Try a different browser or clear DNS cache.,website|not|loading
+ssl error in browser,Check system date/time or renew SSL certificate.,ssl|error|in|browser
+app crashing,Update the app or reinstall it.,app|crashing
+unable to install software,Check admin rights or antivirus blocking installation.,unable|to|install|software
+disk full,Delete unused files or move data to external storage.,disk|full
+system overheating,"Clean fans, check vents, or use cooling pad.",system|overheating
+fan noise loud,Clean dust or replace faulty fan.,fan|noise|loud
+device manager error,Update or reinstall the device driver.,device|manager|error
+windows update stuck,Restart system and run Windows Update troubleshooter.,windows|update|stuck
+windows activation failed,Check product key or contact Microsoft support.,windows|activation|failed
+file not opening,Check file extension or install the correct application.,file|not|opening
+corrupt file,Try file repair tools or restore from backup.,corrupt|file
+USB device not recognized,Try another port or update USB drivers.,usb|device|not|recognized
+camera not detected,Check permissions and restart system.,camera|not|detected
+team not working,Clear Teams cache and re-login.,team|not|working
+zoom mic not working,Check mic settings in Zoom and system preferences.,zoom|mic|not|working
+unable to join meeting,"Check link, app version, and internet connection.",unable|to|join|meeting
+cannot access intranet,Connect to VPN and check DNS settings.,cannot|access|intranet
+network drive not showing,Map the drive again or check permissions.,network|drive|not|showing
+new software request,Contact IT helpdesk with software name and reason.,new|software|request
+request admin access,Submit access request form to IT team.,request|admin|access
+slow internet,Restart router or check background downloads.,slow|internet
+wifi keeps disconnecting,Update Wi-Fi driver or reset network settings.,wifi|keeps|disconnecting
+proxy error,Check proxy settings in browser/system.,proxy|error
+invalid login attempt,Make sure Caps Lock is off and username is correct.,invalid|login|attempt
+excel formula not working,Check formula syntax and cell references.,excel|formula|not|working
+can't save excel file,Check file permissions or save with a new name.,can't|save|excel|file
+email bounce back,Check if recipient email is correct or mailbox is full.,email|bounce|back
+junk email issue,Mark legitimate emails as 'Not Junk' to train the filter.,junk|email|issue
+auto signature missing,Enable it in mail settings under signature.,auto|signature|missing
+calendar not syncing,Check time zone and sync settings.,calendar|not|syncing
+meeting not showing in calendar,Ensure correct calendar is selected.,meeting|not|showing|in|calendar
+account locked,Wait for cooldown or contact IT to unlock it.,account|locked
+slow boot time,Disable startup apps or run disk cleanup.,slow|boot|time
+BIOS update needed,Contact IT support. Do not update BIOS without guidance.,bios|update|needed
+office not activating,Sign in with licensed email and try activation.,office|not|activating
+license expired,Contact IT for license renewal.,license|expired
+screen resolution wrong,Adjust display settings or update graphic drivers.,screen|resolution|wrong
+can't access Google Drive,Login with company email or check permissions.,can't|access|google|drive
+dropbox not syncing,Restart app and check internet connection.,dropbox|not|syncing
+one drive issues,Re-login and ensure sync is enabled.,one|drive|issues
+new user setup,Submit user creation request to IT.,new|user|setup
+laptop upgrade request,Submit hardware upgrade request to your manager.,laptop|upgrade|request
+outlook search not working,Rebuild search index or restart Outlook.,outlook|search|not|working
+remote desktop not connecting,"Check firewall, IP address, and remote access settings.",remote|desktop|not|connecting
+firewall blocking app,Add exception in firewall settings.,firewall|blocking|app
+software license key missing,Contact IT to get the activation key.,software|license|key|missing
+zoom camera not detected,Allow camera permission in Zoom and browser settings.,zoom|camera|not|detected
+audio echo in call,Use headset or check for multiple mics on.,audio|echo|in|call
+duplicate emails in inbox,Check rules and sync settings.,duplicate|emails|in|inbox
+deleted email recovery,Go to Deleted Items and restore.,deleted|email|recovery
+google chat not loading,Clear cache and try different browser.,google|chat|not|loading
+slack not working,Check workspace login and app version.,slack|not|working
+microsoft store not opening,Run store troubleshooter or reset app.,microsoft|store|not|opening
+policy restriction error,Contact admin to change group policy.,policy|restriction|error
+device encryption required,Enable BitLocker or company encryption software.,device|encryption|required
+mobile email not syncing,Re-add account or check sync settings.,mobile|email|not|syncing
+new hardware not detected,Check drivers and device compatibility.,new|hardware|not|detected
+system time incorrect,Sync with internet time server.,system|time|incorrect
+wifi authentication problem,Forget and rejoin network with correct credentials.,wifi|authentication|problem
+update antivirus,Open antivirus app and check for latest updates.,update|antivirus
+security alert message,Contact IT if unsure—don’t click on suspicious links.,security|alert|message
+suspected phishing,Forward email to security team for analysis.,suspected|phishing
+popup ads appearing,Run malware scan and remove suspicious apps.,popup|ads|appearing
+new user onboarding,Follow IT checklist and setup guide.,new|user|onboarding
+HR portal not accessible,Check login credentials and URL.,hr|portal|not|accessible
+proxy settings incorrect,Use automatic settings or contact IT.,proxy|settings|incorrect
+screen brightness issue,Update display drivers or adjust power settings.,screen|brightness|issue
+printer offline,Restart printer and check network connection.,printer|offline
+scan to email not working,Check SMTP settings and network.,scan|to|email|not|working
+access denied to folder,Request permissions from folder owner or admin.,access|denied|to|folder
+script error on webpage,Try a different browser or update JavaScript engine.,script|error|on|webpage
